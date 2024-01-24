@@ -38,6 +38,8 @@ const route = async (fromLongitude, fromLatitude, toLongitude, toLatitude, mode:
   )
   {
             tripPatterns {
+      expectedStartTime
+      expectedEndTime
               duration
               walkDistance
               legs {
@@ -96,45 +98,53 @@ export default async function handler(req, res) {
         const carData = await route(from.longitude, from.latitude, to.longitude, to.latitude, 'car');
         const transitData = await route(from.longitude, from.latitude, to.longitude, to.latitude, 'transit');
 
-        const relevantTransitData = transitData.data.trip.tripPatterns;
+        try {
 
-        const carDistanceKm = carData.data.trip.tripPatterns[0].legs.filter((leg) => leg.mode === 'car').reduce((acc, leg) => acc + leg.distance, 0) / 1000;
-        const carTravelTime = carData.data.trip.tripPatterns[0].duration;
+            const relevantTransitData = transitData.data.trip.tripPatterns;
 
-        const carCost = carDistanceKm * AVG_COST_PER_KM_CAR;
-        const carCo2g = carDistanceKm * AVG_G_CO2_PER_KM_CAR;
+            const carDistanceKm = carData.data.trip.tripPatterns[0].legs.filter((leg) => leg.mode === 'car').reduce((acc, leg) => acc + leg.distance, 0) / 1000;
+            const carTravelTime = carData.data.trip.tripPatterns[0].duration;
 
-        let PT_cost = PT_SINGLE_TICKET_COST;
-        if (hasMonthlyCard) {
-            const tripsPerMonth = AVG_NO_OF_TRIPS_PER_DAY * (365.24/12)
-            PT_cost = PT_30DAY_CARD_COST / tripsPerMonth;
-        }
+            const carCost = carDistanceKm * AVG_COST_PER_KM_CAR;
+            const carCo2g = carDistanceKm * AVG_G_CO2_PER_KM_CAR;
 
-        const out = relevantTransitData.map((tripPattern) => {
-            const ptDistanceKm = tripPattern.legs.filter((leg) => leg.mode !== 'car' && leg.mode !== "foot").reduce((acc, leg) => acc + leg.distance, 0) / 1000;
-            const ptTravelTime = tripPattern.duration;
-
-            const ptCo2g = ptDistanceKm * AVG_G_CO2_PER_KM_PT;
-
-            const durationEqualToCar = ptTravelTime <= carTravelTime + TIME_SPENT_PARKING_S;
-            const moneySaved = Math.round(carCost - PT_cost);
-            const co2Saved = Math.round(carCo2g - ptCo2g);
-            const durationSaved = Math.round(carTravelTime - ptTravelTime);
-            const distanceSaved = Math.round(carDistanceKm - ptDistanceKm);
-
-            return {
-                durationEqualToCar,
-                moneySaved,
-                co2Saved,
-                durationSaved,
-                distanceSaved,
-                ptTravelTime,
-                ptDistanceKm,
-                trip: tripPattern,
+            let PT_cost = PT_SINGLE_TICKET_COST;
+            if (hasMonthlyCard) {
+                const tripsPerMonth = AVG_NO_OF_TRIPS_PER_DAY * (365.24 / 12)
+                PT_cost = PT_30DAY_CARD_COST / tripsPerMonth;
             }
-        })
 
-        res.status(200).json(out);
+            const out = relevantTransitData.map((tripPattern) => {
+                const ptDistanceKm = tripPattern.legs.filter((leg) => leg.mode !== 'car' && leg.mode !== "foot").reduce((acc, leg) => acc + leg.distance, 0) / 1000;
+                const ptTravelTime = tripPattern.duration;
+
+                const ptCo2g = ptDistanceKm * AVG_G_CO2_PER_KM_PT;
+
+                const durationEqualToCar = ptTravelTime <= carTravelTime + TIME_SPENT_PARKING_S;
+                const moneySaved = Math.round(carCost - PT_cost);
+                const co2Saved = Math.round(carCo2g - ptCo2g);
+                const durationSaved = Math.round(carTravelTime - ptTravelTime);
+                const distanceSaved = Math.round(carDistanceKm - ptDistanceKm);
+
+                return {
+                    durationEqualToCar,
+                    moneySaved,
+                    co2Saved,
+                    durationSaved,
+                    distanceSaved,
+                    ptTravelTime,
+                    ptDistanceKm,
+                    trip: tripPattern,
+                }
+            })
+
+            res.status(200).json(out);
+        } catch (e) {
+            console.error(e);
+            console.log("carData", carData)
+            console.log("transitData", transitData)
+            res.status(500).json({error: e});
+        }
     } else {
         res.setHeader('Allow', ['POST']);
         res.status(405).end(`Method ${req.method} Not Allowed`);
