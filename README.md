@@ -5,5 +5,6 @@ We are a group working on showcasing user savings in Ruter app. The project is a
 - https://v0.dev/
 - 
 ### Data Resources used
+- https://www.toi.no/english/
 - https://developer.entur.org/
 - https://www.chooose.today/
