@@ -3,7 +3,7 @@ We are a group working on showcasing user savings in Ruter app. The project is a
 
 ### Tools Used
 - https://v0.dev/
-- 
+  
 ### Data Resources used
 - https://www.toi.no/english/
 - https://developer.entur.org/
