@@ -1,0 +1,175 @@
+.home {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  .home-header {
+    width: calc(100% - 4rem);
+    height: 5rem;
+    background-color: #282838;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+
+    .language-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-end;
+
+      span {
+        margin-left: 0.5rem;
+      }
+
+      img {
+        width: 2rem;
+        height: 2rem;
+        margin-left: 0.5rem;
+      }
+    }
+  }
+
+  .home-body {
+    flex: 1;
+
+    display: flex;
+    flex-direction: row;
+
+    .departure-board {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 1rem 2rem;
+      //position: relative;
+
+      //img {
+      //  position: absolute;
+      //  top: 0;
+      //  left: 0;
+      //  width: 100%;
+      //  height: 100%;
+      //  object-fit: cover;
+      //  overflow: hidden;
+      //}
+
+      .departure-board-header, .departure-board-row {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1rem;
+        margin-top: 1rem;
+
+        span {
+          font-size: 1.4rem;
+          font-weight: 200;
+          flex: 1;
+        }
+      }
+    }
+
+    .bus-location-board {
+      width: 500px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+
+      .leaflet-container {
+        background-color: #0d0d0d; // dark background for dark map (displayed on tile load)
+        width: 100%;
+        //height: 100%;
+        flex: 1;
+      }
+
+    }
+  }
+
+  .maas-state-section {
+    width: calc(100% - 2rem);
+    height: 3rem;
+    background-color: #3e3e54;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 1rem;
+
+    span {
+      margin-left: 0.5rem;
+    }
+
+    img {
+      max-height: 1.2rem;
+      max-width: 3rem;
+      margin-left: 0.5rem;
+    }
+  }
+
+  .home-footer {
+    width: calc(100% - 2rem);
+    height: 5rem;
+    background-color: #282838;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+
+  }
+
+
+  .announcement-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+
+    span {
+      margin-left: 0.5rem;
+    }
+
+    span, svg {
+      font-size: 1.2rem;
+    }
+  }
+
+  .weather-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    span {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .signup-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    span {
+      margin-left: 0.5rem;
+    }
+
+    img {
+      $size: 4rem;
+      width: $size;
+      height: $size;
+      margin-left: 0.5rem;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import "styles";
+
+body, input, textarea {
+  background-color: white;
+  color: black;
+}
+
+body, input, textarea {
+  background-color: $background-color;
+  color: white;
+}
+
+// alignment, styles
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body, input::placeholder, textarea::placeholder {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: normal;
+  color: #c7c7c7;
+}
+
+span, p, label, input::placeholder {
+  font-weight: 200;
+}
+
+a {
+  color: #61dafb;
+
+  &:visited {
+    color: #4ddebc;
+  }
+}
